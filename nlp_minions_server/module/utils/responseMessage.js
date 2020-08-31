@@ -18,10 +18,27 @@ module.exports = {
     BOARD_DELETE_SUCCESS: "게시글 삭제 성공",
     BOARD_DELETE_FAIL: "게시글 삭제 실패",
 
+    DATA_INPUT_SUCCESS: (x) => `수집 데이터 총 ${x}행 저장 성공`,
+    DATA_INPUT_FAIL: "수집 데이터 저장 실패",
+
     ALREADY_ID: "존재하는 ID 입니다.",
     NO_USER: "존재하지 않는 유저 입니다.",
     NO_BOARD: "존재하는 게시글 입니다.",
-    MISS_MATCH_PW: "비밀번호가 일치하지 않습니다",
+    MISS_MATCH_PW: "비밀번호가 일치하지 않습니다.",
 
     INTERNAL_SERVER_ERROR: "서버 내부 오류",
+
+    X_NULL_VALUE: (x) => `${x}가 존재하지 않습니다`,
+    X_CREATE_SUCCESS: (x) => `${x} 작성 성공`,
+    X_CREATE_FAIL: (x) => `${x} 작성 실패`,
+    X_READ_ALL_SUCCESS: (x) => `${x} 전체 조회 성공`,
+    X_READ_ALL_FAIL: (x) => `${x} 전체 조회 실패`,
+    X_READ_SUCCESS: (x) => `${x} 조회 성공`,
+    X_READ_FAIL: (x) => `${x} 조회 실패`,
+    X_UPDATE_SUCCESS: (x) => `${x} 수정 성공`,
+    X_UPDATE_FAIL: (x) => `${x} 수정 실패`,
+    X_DELETE_SUCCESS: (x) => `${x} 삭제 성공`,
+    X_DELETE_FAIL: (x) => `${x} 삭제 실패`,  
+    NO_X: (x) => `존재하지 않는 ${x} 입니다`,
+    ALREADY_X: (x) => `이미 존재하는 ${x} 입니다`,
     } 

@@ -10,7 +10,7 @@ const Utils = {
         return {
             statusCode : statusCode,
             message: message,
-            data: null
+            data: data
         }
     },
 }
