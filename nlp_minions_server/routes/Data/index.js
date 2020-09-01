@@ -46,5 +46,51 @@ router.post('/network', async(req, res) => {
     res.status(statusCode.OK).send(utils.successTrue(statusCode.OK, responseMessage.DATA_INPUT_SUCCESS(count)));
 });
 
+router.post('/user', async(req, res) => {
+    console.log('in')
+    const user_list = req.body['data'];
+    
+    if(user_list.length == 0){ //비어있는지 검사
+        console.log("list empty")
+        res
+        .status(statusCode.BAD_REQUEST)
+        .send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.X_NULL_VALUE(user_list)));
+        return;
+    }
+    var count = 0
+
+    for (var i = 0; i < user_list.length; i++){
+        var {team_idx, inner_id, insta_id, job, interest, age, region, gender, profile} = user_list[i];
+
+        if(!team_idx || !inner_id || !insta_id){
+            console.log("missing parameter")
+
+            const missParameters = Object.entries({team_idx, inner_id, insta_id})
+            .filter(it => it[1] == undefined).map(it => it[0]).join(',');
+
+            res.status(statusCode.BAD_REQUEST).send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.X_NULL_VALUE(missParameters), user_list[i]));
+            return;
+        }
+
+        if(!job & !interest & !age & !region & !gender){
+            console.log("NO_TEAM_FEATURE")
+
+            res.status(statusCode.BAD_REQUEST).send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.NO_TEAM_FEATURE, user_list[i]));
+            return;
+        }
+        
+        const json = {team_idx, inner_id, insta_id, job, interest, age, region, gender, profile};
+    
+        const result = await Data.inputUser(json).catch();
+
+        if(result.length == 0) {
+            res.status(statusCode.INTERNAL_SERVER_ERROR).send(utils.successFalse(statusCode.INTERNAL_SERVER_ERROR, responseMessage.DATA_INPUT_FAIL, result));
+            return;
+        }
+        count += 1
+    }        
+    res.status(statusCode.OK).send(utils.successTrue(statusCode.OK, responseMessage.DATA_INPUT_SUCCESS(count)));
+    
+});
 
 module.exports = router;

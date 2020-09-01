@@ -18,5 +18,13 @@ module.exports = {
         const questions = `"${json.team_idx}", "${json.start}", "${json.end}", "${relation_type_idx}", "${json.shortcode}"`;
         let result = await pool.queryParam_None(`INSERT INTO ${table_name}(${fields}) VALUES(${questions})`);
         return result;
+    },
+    
+    inputUser: async(json) => {
+        const user_name = table2 + '_' + json.team_idx
+        const fields = 'team_idx, inner_id, insta_id, job, interest, age, region, gender, profile';
+        const questions = `"${json.team_idx}", "${json.inner_id}", "${json.insta_id}", "${json.job}", "${json.interest}", "${json.age}", "${json.region}", "${json.gender}", "${json.profile}"`;
+        let result = await pool.queryParam_None(`INSERT INTO ${user_name}(${fields}) VALUES(${questions})`);
+        return result;
     }
 };

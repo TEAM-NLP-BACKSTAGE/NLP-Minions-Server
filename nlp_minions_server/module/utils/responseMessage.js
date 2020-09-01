@@ -25,7 +25,7 @@ module.exports = {
     NO_USER: "존재하지 않는 유저 입니다.",
     NO_BOARD: "존재하는 게시글 입니다.",
     MISS_MATCH_PW: "비밀번호가 일치하지 않습니다.",
-
+    NO_TEAM_FEATURE: "팀별 카테고리 데이터가 존재하지 않습니다. 카테고리 데이터가 최소 하나 이상 요구됩니다.",
     INTERNAL_SERVER_ERROR: "서버 내부 오류",
 
     X_NULL_VALUE: (x) => `${x}가 존재하지 않습니다`,
