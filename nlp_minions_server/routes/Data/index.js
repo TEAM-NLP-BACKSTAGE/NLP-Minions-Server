@@ -34,7 +34,8 @@ router.post('/network', async(req, res) => {
         const json = {team_idx, start, end, relation_type, shortcode};
 
         const result = await Data.inputNetwork(json);
-        
+        console.log(result)
+
         if(result.length == 0) {
             res.status(statusCode.INTERNAL_SERVER_ERROR).send(utils.successFalse(statusCode.INTERNAL_SERVER_ERROR, responseMessage.DATA_INPUT_FAIL, result));
             return;
