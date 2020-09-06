@@ -20,7 +20,7 @@ router.post('/network', async(req, res) => {
 
     for (var i = 0; i < network_list.length; i++){
         var {team_idx, start, end, relation_type, shortcode} = network_list[i];
-
+        //console.log(shortcode)
         if(!team_idx || !start || !end || !relation_type){
             console.log("missing parameter")
 
@@ -33,8 +33,16 @@ router.post('/network', async(req, res) => {
         
         const json = {team_idx, start, end, relation_type, shortcode};
 
+        
+        for (var j in json){  // undefined값을 null값으로 변환
+            console.log(json[j])
+            if (json[j] == undefined){
+                json[j] = null
+                console.log(json[j])
+            }
+        }
+
         const result = await Data.inputNetwork(json);
-        console.log(result)
 
         if(result.length == 0) {
             res.status(statusCode.INTERNAL_SERVER_ERROR).send(utils.successFalse(statusCode.INTERNAL_SERVER_ERROR, responseMessage.DATA_INPUT_FAIL, result));
@@ -78,9 +86,18 @@ router.post('/user', async(req, res) => {
             res.status(statusCode.BAD_REQUEST).send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.NO_TEAM_FEATURE, user_list[i]));
             return;
         }
+
         
         const json = {team_idx, inner_id, insta_id, job, interest, age, region, gender, profile};
     
+        for (var j in json){  // undefined값을 null값으로 변환
+            console.log(json[j])
+            if (json[j] == undefined){
+                json[j] = null
+                console.log(json[j])
+            }
+        }
+
         const result = await Data.inputUser(json).catch();
 
         if(result.length == 0) {
