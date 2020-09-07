@@ -158,4 +158,54 @@ router.post('/post', async(req, res) => {
     
 });
 
+router.post('/reply', async(req, res) => {
+    console.log('in')
+    const reply_list = req.body['data'];
+    
+    if(reply_list.length == 0){ //비어있는지 검사
+        console.log("list empty")
+        res
+        .status(statusCode.BAD_REQUEST)
+        .send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.X_NULL_VALUE(reply_list)));
+        return;
+    }
+    var count = 0
+
+    for (var i = 0; i < reply_list.length; i++){
+        var {inner_id, shortcode, reply_time, reply, hashtag, team_idx} = reply_list[i];
+
+        if(!inner_id || !shortcode || !reply_time || !reply || !team_idx){
+            console.log("missing parameter")
+
+            const missParameters = Object.entries({inner_id, shortcode, reply_time, reply, team_idx})
+            .filter(it => it[1] == undefined).map(it => it[0]).join(',');
+
+            res.status(statusCode.BAD_REQUEST).send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.X_NULL_VALUE(missParameters), reply_list[i]));
+            return;
+        }
+        
+        const json = {inner_id, shortcode, reply_time, reply, hashtag, team_idx};
+    
+        for (var j in json){  // undefined값을 null값으로 변환
+            console.log(json[j])
+            if (json[j] == undefined){
+                json[j] = null
+                console.log(json[j])
+            }
+        }
+        
+        const result = await Data.inputReply(json).catch();
+
+        if(result.length == 0) {
+            res.status(statusCode.INTERNAL_SERVER_ERROR).send(utils.successFalse(statusCode.INTERNAL_SERVER_ERROR, responseMessage.DATA_INPUT_FAIL, result));
+            return;
+        }
+        count += 1
+    }        
+    res.status(statusCode.OK).send(utils.successTrue(statusCode.OK, responseMessage.DATA_INPUT_SUCCESS(count)));
+    
+});
+
+
+
 module.exports = router;

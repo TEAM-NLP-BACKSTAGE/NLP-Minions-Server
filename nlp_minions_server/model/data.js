@@ -2,6 +2,7 @@ const pool = require('../module/pool');
 const table1 = 'INSTA_RELATION';
 const table2 = 'INSTA_PROFILE';
 const table3 = 'POST';
+const table4 = 'REPLY'; 
 
 module.exports = {
     inputNetwork: async(json) => {
@@ -101,4 +102,19 @@ module.exports = {
         let result = await pool.queryParam_None(`INSERT INTO ${table_name}(${fields}) VALUES(${questions})`);
         return result;
     },
+
+    inputReply: async(json) => {
+
+        // null값을 가질 수 있는 변수 대상으로 쿼리 형식 맞추기
+        let hashtag = json.hashtag
+        if (hashtag){
+            hashtag = `"${json.hashtag}"`
+        }
+
+        const table_name = table4 + '_' + json.team_idx
+        const fields = 'inner_id, shortcode, reply_time, reply, hashtag, team_idx';
+        const questions = `"${json.inner_id}", "${json.shortcode}", "${json.reply_time}", "${json.reply}", ${hashtag}, "${json.team_idx}"`;
+        let result = await pool.queryParam_None(`INSERT INTO ${table_name}(${fields}) VALUES(${questions})`);
+        return result;
+    }
 };
