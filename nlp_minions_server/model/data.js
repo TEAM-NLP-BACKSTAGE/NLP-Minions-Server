@@ -65,5 +65,40 @@ module.exports = {
         const questions = `"${json.team_idx}", "${json.inner_id}", "${json.insta_id}", ${job}, ${interest}, ${age}, ${region}, ${gender}, ${profile}`;
         let result = await pool.queryParam_None(`INSERT INTO ${table_name}(${fields}) VALUES(${questions})`);
         return result;
-    }
+    },
+
+    inputPost: async(json) => {
+
+        // null값을 가질 수 있는 변수들 대상으로 쿼리 형식 맞추기
+        let crawling_time = json.crawling_time
+        if (crawling_time){
+            crawling_time = `"${json.crawling_time}"`
+        }
+
+        let view_count = json.view_count
+        if (view_count){
+            view_count = `"${json.view_count}"`
+        }
+
+        let content = json.content
+        if (content){
+            content = `"${json.content}"`
+        }
+
+        let region_tag = json.region_tag
+        if (region_tag){
+            region_tag = `"${json.region_tag}"`
+        }
+
+        let hashtag = json.hashtag
+        if (hashtag){
+            hashtag = `"${json.hashtag}"`
+        }
+
+        const table_name = table3 + '_' + json.team_idx
+        const fields = 'inner_id, post_date, crawling_time, like_count, view_count, url, shortcode, media_url, content, region_tag, hashtag, team_idx';
+        const questions = `"${json.inner_id}", "${json.post_date}", ${crawling_time}, "${json.like_count}", ${view_count}, "${json.url}", "${json.shortcode}", "${json.media_url}", ${content}, ${region_tag}, ${hashtag}, "${json.team_idx}"`;
+        let result = await pool.queryParam_None(`INSERT INTO ${table_name}(${fields}) VALUES(${questions})`);
+        return result;
+    },
 };

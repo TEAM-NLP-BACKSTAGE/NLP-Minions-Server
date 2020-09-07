@@ -110,4 +110,52 @@ router.post('/user', async(req, res) => {
     
 });
 
+router.post('/post', async(req, res) => {
+    console.log('in')
+    const post_list = req.body['data'];
+    
+    if(post_list.length == 0){ //비어있는지 검사
+        console.log("list empty")
+        res
+        .status(statusCode.BAD_REQUEST)
+        .send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.X_NULL_VALUE(post_list)));
+        return;
+    }
+    var count = 0
+
+    for (var i = 0; i < post_list.length; i++){
+        var {inner_id, post_date, crawling_time, like_count, view_count, url, shortcode, media_url, content, region_tag, hashtag, team_idx} = post_list[i];
+
+        if(!team_idx || !inner_id || !shortcode || !post_date || !like_count || !url || !media_url){
+            console.log("missing parameter")
+
+            const missParameters = Object.entries({team_idx, inner_id, shortcode, post_date, like_count, url, media_url})
+            .filter(it => it[1] == undefined).map(it => it[0]).join(',');
+
+            res.status(statusCode.BAD_REQUEST).send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.X_NULL_VALUE(missParameters), post_list[i]));
+            return;
+        }
+        
+        const json = {inner_id, post_date, crawling_time, like_count, view_count, url, shortcode, media_url, content, region_tag, hashtag, team_idx};
+    
+        for (var j in json){  // undefined값을 null값으로 변환
+            console.log(json[j])
+            if (json[j] == undefined){
+                json[j] = null
+                console.log(json[j])
+            }
+        }
+        
+        const result = await Data.inputPost(json).catch();
+
+        if(result.length == 0) {
+            res.status(statusCode.INTERNAL_SERVER_ERROR).send(utils.successFalse(statusCode.INTERNAL_SERVER_ERROR, responseMessage.DATA_INPUT_FAIL, result));
+            return;
+        }
+        count += 1
+    }        
+    res.status(statusCode.OK).send(utils.successTrue(statusCode.OK, responseMessage.DATA_INPUT_SUCCESS(count)));
+    
+});
+
 module.exports = router;
