@@ -13,6 +13,7 @@ router.post('/signin', async(req, res) => {
         console.log("empty")
         res
         .status(statusCode.BAD_REQUEST)
+        .header("Access-Control-Allow-Origin", "*")
         .send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.NULL_VALUE));
         return;
     }
@@ -22,12 +23,14 @@ router.post('/signin', async(req, res) => {
     if(userResult.length == 0) { //존재하지 않는 데이터
         res
         .status(statusCode.BAD_REQUEST)
+        .header("Access-Control-Allow-Origin", "*")
         .send(utils.successFalse(statusCode.NO_USER, responseMessage.NO_USER));
         return;
     } else {       
         const user_idx = userResult[0].user_idx;
         res
         .status(statusCode.OK)
+        .header("Access-Control-Allow-Origin", "*")
         .send(utils.successTrue(statusCode.OK, responseMessage.SIGN_IN_SUCCESS, userResult[0]));
     }
     
