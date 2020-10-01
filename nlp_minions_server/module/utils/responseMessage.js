@@ -24,6 +24,9 @@ module.exports = {
     RANKING_READ_SUCCESS: "누적포인트 랭킹 조회 성공",
     RANKING_READ_FAIL: "누적포인트 랭킹 조회 실패",
 
+    POINT_READ_SUCCESS: "포인트 조회 성공",
+    POINT_READ_FAIL: "포인트 조회 실패",
+
     ALREADY_ID: "존재하는 ID 입니다.",
     NO_USER: "존재하지 않는 유저 입니다.",
     NO_BOARD: "존재하지 않는 게시글 입니다.",

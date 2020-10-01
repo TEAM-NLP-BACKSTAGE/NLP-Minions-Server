@@ -36,4 +36,22 @@ router.post('/signin', async(req, res) => {
     
 });
 
+router.get('/point/:user_idx', async(req, res) => {
+    console.log('in')
+    const user_idx = req.params.user_idx;
+
+    const pointResult = await User.readPoint(user_idx);
+    
+    if(pointResult.length == 0) {  //존재하지 않는 데이터
+        res
+        .status(statusCode.INTERNAL_SERVER_ERROR)
+        .send(utils.successFalse(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR));
+        return;
+    } else {       
+        res
+        .status(statusCode.OK)
+        .send(utils.successTrue(statusCode.OK, responseMessage.POINT_READ_SUCCESS, pointResult));
+    }
+});
+
 module.exports = router;
