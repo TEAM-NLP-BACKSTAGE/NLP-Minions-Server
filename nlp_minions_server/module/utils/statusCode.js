@@ -12,4 +12,5 @@ module.exports = {
     SERVICE_UNAVAILABLE: 503,
     DB_ERROR: 600,
     NO_USER: 407,
+    NO_POST: 408
     } 

@@ -27,9 +27,13 @@ module.exports = {
     POINT_READ_SUCCESS: "포인트 조회 성공",
     POINT_READ_FAIL: "포인트 조회 실패",
 
+    READ_LABELLING_POST_SUCCESS: "라벨링할 포스트 데이터 조회 성공",
+    READ_LABELLING_POST_FAIL: "라벨링할 포스트 데이터 조회 실패",
+
     ALREADY_ID: "존재하는 ID 입니다.",
     NO_USER: "존재하지 않는 유저 입니다.",
     NO_BOARD: "존재하지 않는 게시글 입니다.",
+    NO_LABELLING_POST: "해당 카테고리에 더이상 라벨링할 포스트가 존재하지 않습니다.",
     MISS_MATCH_PW: "비밀번호가 일치하지 않습니다.",
     NO_TEAM_FEATURE: "팀별 카테고리 데이터가 존재하지 않습니다. 카테고리 데이터가 최소 하나 이상 요구됩니다.",
     INTERNAL_SERVER_ERROR: "서버 내부 오류",
