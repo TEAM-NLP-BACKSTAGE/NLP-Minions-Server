@@ -2,6 +2,7 @@ const pool = require('../module/pool');
 const table1 = 'POST';
 const table2 = 'INSTA_PROFILE';
 const table3 = 'LABEL';
+const table4 = 'CODE';
 
 module.exports = {
     getPost : async (team_idx) => {
@@ -17,5 +18,10 @@ module.exports = {
         console.log(insertLabelResult)
         const label_idx = insertLabelResult.insertId  //쿼리 결과 패킷안의 insertId: 마지막으로 insert된 값의 PK를 가져옴
         return label_idx;
+    },
+
+    saveLabel: async (label_idx, answer) => {
+        const result = await pool.queryParam_None(`UPDATE ${table3} set type_idx = (SELECT type_idx FROM ${table4} WHERE category_type = "${answer}"), STATE = 6 WHERE label_idx = ${label_idx};`)
+        return result;
     }
 }

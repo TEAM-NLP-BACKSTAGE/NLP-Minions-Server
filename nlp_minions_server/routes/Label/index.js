@@ -5,6 +5,7 @@ const responseMessage = require('../../module/utils/responseMessage');
 const utils = require('../../module/utils/utils');
 const Label = require('../../model/label');
 
+// 라벨링 화면 출력
 router.get('/user_idx/:user_idx/team_idx/:team_idx', async(req, res) => {
     console.log('in')
     const user_idx = req.params.user_idx;
@@ -38,6 +39,32 @@ router.get('/user_idx/:user_idx/team_idx/:team_idx', async(req, res) => {
     res
     .status(statusCode.OK)
     .send(utils.successTrue(statusCode.OK, responseMessage.READ_LABELLING_POST_SUCCESS, finalResult));    
+});
+
+// 라벨링 저장
+router.put("/saveLabel", async(req, res) => {
+    var {label_idx, answer} = req.body;
+
+    if(!label_idx || !answer)
+    {
+        const missParameters = Object.entries({label_idx, answer}).filter(it => it[1] == undefined).map(it => it[0]).join(',');
+        res.status(statusCode.BAD_REQUEST).send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.X_NULL_VALUE(missParameters)));
+        return;
+    }
+
+    answer = answer.replace(/(\s*)/g, ""); //문자열의 모든 공백 제거
+
+
+    const result = await Label.saveLabel(label_idx, answer);
+
+    if(result.length == 0)
+    {
+    res.status(statusCode.INTERNAL_SERVER_ERROR).send(utils.successFalse(statusCode.INTERNAL_SERVER_ERROR, responseMessage.LABEL_SAVE_FAIL));
+    return;
+    }
+    else{
+        res.status(statusCode.OK).send(utils.successTrue(statusCode.OK,responseMessage.LABEL_SAVE_SUCCESS));
+    }
 });
 
 module.exports = router;

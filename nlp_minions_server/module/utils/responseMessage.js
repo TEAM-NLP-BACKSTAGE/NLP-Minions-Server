@@ -29,6 +29,9 @@ module.exports = {
 
     READ_LABELLING_POST_SUCCESS: "라벨링할 포스트 데이터 조회 성공",
     READ_LABELLING_POST_FAIL: "라벨링할 포스트 데이터 조회 실패",
+    
+    LABEL_SAVE_SUCCESS: "라벨 저장 성공",
+    LABEL_SAVE_FAIL: "라벨 저장 실패",
 
     ALREADY_ID: "존재하는 ID 입니다.",
     NO_USER: "존재하지 않는 유저 입니다.",
