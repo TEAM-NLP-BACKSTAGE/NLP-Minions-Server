@@ -9,7 +9,7 @@ module.exports = {
     },
 
     readPoint: async (user_idx) => {
-        const result = await pool.queryParam_None(`SELECT username, point, stack_point FROM ${table} WHERE user_idx = "${user_idx}"`);
+        const result = await pool.queryParam_None(`SELECT * FROM ${table} WHERE user_idx = "${user_idx}"`);
         return result;
     }
 }

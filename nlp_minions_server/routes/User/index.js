@@ -47,11 +47,18 @@ router.get('/point/:user_idx', async(req, res) => {
         .status(statusCode.INTERNAL_SERVER_ERROR)
         .send(utils.successFalse(statusCode.INTERNAL_SERVER_ERROR, responseMessage.INTERNAL_SERVER_ERROR));
         return;
-    } else {       
-        res
-        .status(statusCode.OK)
-        .send(utils.successTrue(statusCode.OK, responseMessage.POINT_READ_SUCCESS, pointResult));
     }
+
+    const username = pointResult[0].username
+    const point = pointResult[0].point
+    const stack_point = pointResult[0].stack_point
+    
+    const finalResult = {username, point, stack_point}
+
+    res
+    .status(statusCode.OK)
+    .send(utils.successTrue(statusCode.OK, responseMessage.POINT_READ_SUCCESS, finalResult));
+    
 });
 
 module.exports = router;
