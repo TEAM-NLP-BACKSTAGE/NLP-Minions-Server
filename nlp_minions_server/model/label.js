@@ -3,6 +3,7 @@ const table1 = 'POST';
 const table2 = 'INSTA_PROFILE';
 const table3 = 'LABEL';
 const table4 = 'CODE';
+const table5 = 'USER';
 
 module.exports = {
     getPost : async (team_idx) => {
@@ -20,8 +21,16 @@ module.exports = {
         return label_idx;
     },
 
-    saveLabel: async (label_idx, answer) => {
-        const result = await pool.queryParam_None(`UPDATE ${table3} set type_idx = (SELECT type_idx FROM ${table4} WHERE category_type = "${answer}"), STATE = 6 WHERE label_idx = ${label_idx};`)
-        return result;
+    saveLabel: async (label_idx, user_idx, answer) => {
+        const result1 = await pool.queryParam_None(`UPDATE ${table3} set type_idx = (SELECT type_idx FROM ${table4} WHERE category_type = "${answer}"), STATE = 6 WHERE label_idx = ${label_idx};`)
+        console.log(result1)
+        const result2 = await pool.queryParam_None(`UPDATE ${table5} set point = point + 1, stack_point = stack_point + 1 WHERE user_idx = ${user_idx};`)
+        console.log(result2)
+        if(result1.affectedRows == 0 || result2.affectedRows == 0){ //
+            return []
+        }
+        else{
+            return result2;
+        }
     }
 }

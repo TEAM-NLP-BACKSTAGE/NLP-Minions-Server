@@ -43,11 +43,11 @@ router.get('/user_idx/:user_idx/team_idx/:team_idx', async(req, res) => {
 
 // 라벨링 저장
 router.put("/saveLabel", async(req, res) => {
-    var {label_idx, answer} = req.body;
+    var {label_idx, user_idx, answer} = req.body;
 
-    if(!label_idx || !answer)
+    if(!label_idx || !user_idx || !answer)
     {
-        const missParameters = Object.entries({label_idx, answer}).filter(it => it[1] == undefined).map(it => it[0]).join(',');
+        const missParameters = Object.entries({label_idx, user_idx, answer}).filter(it => it[1] == undefined).map(it => it[0]).join(',');
         res.status(statusCode.BAD_REQUEST).send(utils.successFalse(statusCode.BAD_REQUEST, responseMessage.X_NULL_VALUE(missParameters)));
         return;
     }
@@ -55,7 +55,7 @@ router.put("/saveLabel", async(req, res) => {
     answer = answer.replace(/(\s*)/g, ""); //문자열의 모든 공백 제거
 
 
-    const result = await Label.saveLabel(label_idx, answer);
+    const result = await Label.saveLabel(label_idx, user_idx, answer);
 
     if(result.length == 0)
     {
