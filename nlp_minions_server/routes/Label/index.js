@@ -22,6 +22,7 @@ router.get('/user_idx/:user_idx/team_idx/:team_idx', async(req, res) => {
     const content = postResult[0].content;
     const region_tag = postResult[0].region_tag;
     const hashtag = postResult[0].hashtag;
+    const insta_id = postResult[0].insta_id;
     const profile = postResult[0].profile;
     const inner_id = postResult[0].inner_id;
 
@@ -34,7 +35,7 @@ router.get('/user_idx/:user_idx/team_idx/:team_idx', async(req, res) => {
         return;
     }
 
-    const finalResult = {post_idx, label_idx, content, region_tag, hashtag, profile}
+    const finalResult = {post_idx, label_idx, content, region_tag, hashtag, insta_id, profile}
 
     res
     .status(statusCode.OK)

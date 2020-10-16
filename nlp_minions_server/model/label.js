@@ -8,7 +8,7 @@ const table5 = 'USER';
 module.exports = {
     getPost : async (team_idx) => {
         //아직 라벨링 되지 않은 포스트 하나 가져오기
-        const result = await pool.queryParam_None(`SELECT P.post_idx, P.inner_id, content, region_tag, hashtag, insta_id, profile FROM ${table1} AS P LEFT JOIN ${table2} AS IP ON P.inner_id = IP.inner_id LEFT JOIN ${table3} AS L ON P.post_idx = L.post_idx WHERE L.label_idx IS NULL AND P.team_idx = ${team_idx} LIMIT 1;`);
+        const result = await pool.queryParam_None(`SELECT P.post_idx, P.inner_id, P.content, P.region_tag, P.hashtag, IP.insta_id, IP.profile FROM ${table1} AS P LEFT JOIN ${table2} AS IP ON P.inner_id = IP.inner_id LEFT JOIN ${table3} AS L ON P.post_idx = L.post_idx WHERE L.label_idx IS NULL AND P.team_idx = ${team_idx} LIMIT 1;`);
         return result;
     },
 
