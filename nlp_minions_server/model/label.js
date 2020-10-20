@@ -12,13 +12,17 @@ module.exports = {
         return result;
     },
 
-    initLabel: async (user_idx, post_idx, inner_id) => {
+    initLabel: async (user_idx, post_idx, inner_id, team_idx) => {
         const fields = 'user_idx, post_idx, inner_id';
         const questions = `"${user_idx}", "${post_idx}", "${inner_id}"`;
-        const insertLabelResult = await pool.queryParam_None(`INSERT INTO ${table3}(${fields})VALUES(${questions})`);
-        console.log(insertLabelResult)
-        const label_idx = insertLabelResult.insertId  //쿼리 결과 패킷안의 insertId: 마지막으로 insert된 값의 PK를 가져옴
-        return label_idx;
+        var insertLabelResult = await pool.queryParam_None(`INSERT INTO ${table3}(${fields})VALUES(${questions})`);
+        var str_label_idx = String(insertLabelResult.insertId)  //쿼리 결과 패킷안의 insertId: 마지막으로 insert된 값의 PK를 가져옴
+        
+        if(team_idx == 1){ // 
+            const insertLabelResult2 = await pool.queryParam_None(`INSERT INTO ${table3}(${fields})VALUES(${questions})`);
+            str_label_idx = str_label_idx + ',' + String(insertLabelResult2.insertId)
+        }
+        return str_label_idx;
     },
 
     saveLabel: async (label_idx, user_idx, answer) => {

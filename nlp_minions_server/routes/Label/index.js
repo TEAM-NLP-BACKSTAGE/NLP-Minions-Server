@@ -26,7 +26,7 @@ router.get('/user_idx/:user_idx/team_idx/:team_idx', async(req, res) => {
     const profile = postResult[0].profile;
     const inner_id = postResult[0].inner_id;
 
-    const label_idx = await Label.initLabel(user_idx, post_idx, inner_id)
+    const label_idx = await Label.initLabel(user_idx, post_idx, inner_id, team_idx)
     
     if(!label_idx) {
         res
