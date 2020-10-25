@@ -18,7 +18,7 @@ module.exports = {
         var insertLabelResult = await pool.queryParam_None(`INSERT INTO ${table3}(${fields})VALUES(${questions})`);
         var str_label_idx = String(insertLabelResult.insertId)  //쿼리 결과 패킷안의 insertId: 마지막으로 insert된 값의 PK를 가져옴
         
-        if(team_idx == 1){ // 
+        if(team_idx == 1){ //성별&나이 카테고리 라벨링시, 각각의 라벨 두개 동시에 생성/리턴
             const insertLabelResult2 = await pool.queryParam_None(`INSERT INTO ${table3}(${fields})VALUES(${questions})`);
             str_label_idx = str_label_idx + ',' + String(insertLabelResult2.insertId)
         }
@@ -26,10 +26,10 @@ module.exports = {
     },
 
     saveLabel: async (label_idx, user_idx, answer) => {
-        const result1 = await pool.queryParam_None(`UPDATE ${table3} set type_idx = (SELECT type_idx FROM ${table4} WHERE category_type = "${answer}"), STATE = 6 WHERE label_idx = ${label_idx};`)
-        console.log(result1)
+        const result1 = await pool.queryParam_None(`UPDATE ${table3} set labeling = (SELECT simple_word FROM ${table4} WHERE category_type = "${answer}"), STATE = 'C' WHERE label_idx = ${label_idx};`)
+        //console.log(result1)
         const result2 = await pool.queryParam_None(`UPDATE ${table5} set point = point + 1, stack_point = stack_point + 1 WHERE user_idx = ${user_idx};`)
-        console.log(result2)
+        //console.log(result2)
         if(result1.affectedRows == 0 || result2.affectedRows == 0){ //
             return []
         }
