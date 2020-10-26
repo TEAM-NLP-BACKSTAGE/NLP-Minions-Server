@@ -8,7 +8,16 @@ const table5 = 'USER';
 module.exports = {
     getPost : async (team_idx) => {
         //아직 라벨링 되지 않은 포스트 하나 랜덤으로 가져오기
-        const result = await pool.queryParam_None(`SELECT P.post_idx, P.inner_id, P.content, P.region_tag, P.hashtag, IP.insta_id, IP.profile FROM ${table1} AS P LEFT JOIN ${table2} AS IP ON P.inner_id = IP.inner_id LEFT JOIN ${table3} AS L ON P.post_idx = L.post_idx WHERE L.label_idx IS NULL AND P.team_idx = ${team_idx} ORDER BY RAND() LIMIT 1;`);
+
+        // 방법1. 장점 : 쿼리 간결, 랜덤 출력 잘됨          단점 : 너무 느림(20초)
+        //const result = await pool.queryParam_None(`SELECT P.post_idx, P.inner_id, P.content, P.region_tag, P.hashtag, IP.insta_id, IP.profile FROM ${table1} AS P LEFT JOIN ${table2} AS IP ON P.inner_id = IP.inner_id LEFT JOIN ${table3} AS L ON P.post_idx = L.post_idx WHERE L.label_idx IS NULL AND P.team_idx = ${team_idx} ORDER BY RAND() LIMIT 1;`);
+        
+        // 방법2. 장점 : 빠름(1초)                         단점 : 랜덤 출력 안됨, 반환값이 없는 경우 발생, 쿼리 복잡
+        //const result = await pool.queryParam_None(`SELECT P.post_idx, P.inner_id, P.content, P.region_tag, P.hashtag, IP.insta_id, IP.profile FROM ${table1} AS P JOIN (SELECT post_idx FROM ${table1} ORDER BY RAND()) AS R ON P.post_idx = R.post_idx LEFT JOIN ${table2} AS IP ON P.inner_id = IP.inner_id LEFT JOIN ${table3} AS L ON P.post_idx = L.post_idx WHERE L.label_idx IS NULL AND P.team_idx = ${team_idx} LIMIT 1;`);
+        
+        // 방법3. 장점 : 적당한 속도(3초), 랜덤 출력 잘됨    단점: 쿼리 복잡
+        const result = await pool.queryParam_None(`SELECT P.post_idx, P.inner_id, P.content, P.region_tag, P.hashtag, IP.insta_id, IP.profile FROM ${table1} AS P JOIN (SELECT P.post_idx FROM ${table1} AS P LEFT JOIN ${table3} AS L ON P.post_idx = L.post_idx WHERE P.team_idx = ${team_idx} ORDER BY RAND() LIMIT 1) AS R ON P.post_idx = R.post_idx LEFT JOIN ${table2} AS IP ON P.inner_id = IP.inner_id WHERE L.label_idx IS NULL;`);
+        
         return result;
     },
 
