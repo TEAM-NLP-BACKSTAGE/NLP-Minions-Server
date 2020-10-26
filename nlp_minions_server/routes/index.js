@@ -5,6 +5,8 @@ router.use('/data', require('./Data'));
 router.use('/user', require('./User'));
 router.use('/home', require('./Home'));
 router.use('/label', require('./Label'));
+router.use('/analysis', require('./Analysis'));
+
 
 
 /* GET home page. */

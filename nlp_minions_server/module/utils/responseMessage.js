@@ -33,8 +33,12 @@ module.exports = {
     LABEL_SAVE_SUCCESS: "라벨 저장 성공",
     LABEL_SAVE_FAIL: "라벨 저장 실패",
 
+    RETURN_ANALYSIS_RESULT_SUCCESS: "분석 결과 반환 성공",
+    RETURN_ANALYSIS_RESULT_FAIL: "분석 결과 반환 실패",
+
     ALREADY_ID: "존재하는 ID 입니다.",
     NO_USER: "존재하지 않는 유저 입니다.",
+    NO_INSTA_USER: "해당 인스타그램 아이디를 찾을 수 없습니다.",
     NO_BOARD: "존재하지 않는 게시글 입니다.",
     NO_LABELLING_POST: "해당 카테고리에 더이상 라벨링할 포스트가 존재하지 않습니다.",
     MISS_MATCH_PW: "비밀번호가 일치하지 않습니다.",
